@@ -27,12 +27,12 @@ function Test-IsAdmin
 
    process
    {
-      if ($PSVersionTable.PSEdition -eq 'Desktop')
+      if (($IsWindows -eq $true) -or ($PSVersionTable.PSEdition -eq 'Desktop'))
       {
          # Fastest way on Windows
-         ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')
+         ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
       }
-      elseif (($PSVersionTable.PSEdition -eq 'Core') -and ($PSVersionTable.Platform -eq 'Unix'))
+      elseif (($IsLinux -eq $true) -or ($IsMacOs -eq $true))
       {
          # Ok, on macOS and Linux we use ID to figure out if we run elevated (0 means superuser rights)
          if ((id -u) -eq 0)
@@ -43,12 +43,6 @@ function Test-IsAdmin
          {
             return $false
          }
-      }
-      elseif (($PSVersionTable.PSEdition -eq 'Core') -and ($PSVersionTable.Platform -eq 'Win32NT'))
-      {
-         # For PowerShell Core on Windows the same approach as with the Desktop work just fine
-         # This is for future improvements :-)
-         ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')
       }
       else
       {
