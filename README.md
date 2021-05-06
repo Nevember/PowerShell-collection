@@ -1,3 +1,7 @@
+# NEVEMBER | IMPORTANT NOTE
+
+This collection was forked. The following README belongs to its originator.
+
 # Josh's PowerShell collection
 
 A collection of PowerShell scripts, tooling, and some of my modules.
